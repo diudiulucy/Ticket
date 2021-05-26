@@ -15,11 +15,11 @@ D:/IEDownLoad/Caluc
 -logFile
 Logs/AssetImportWorker0.log
 -srvPort
-53869
+50139
 Successfully changed project path to: D:/IEDownLoad/Caluc
 D:/IEDownLoad/Caluc
 Using Asset Import Pipeline V2.
-Refreshing native plugins compatible for Editor in 36.86 ms, found 0 plugins.
+Refreshing native plugins compatible for Editor in 54.90 ms, found 0 plugins.
 Preloading 0 native plugins for Editor in 0.00 ms.
 Initialize engine version: 2020.3.0f1c1 (1e553bf703d9)
 [Subsystems] Discovering subsystems at path D:/Program Files/Unity/Editor/Data/Resources/UnitySubsystems
@@ -31,106 +31,10 @@ Direct3D:
     Vendor:   
     VRAM:     2020 MB
     Driver:   23.21.13.8857
+Invalid texture used for cursor - check importer settings or texture creation. Texture must be RGBA32, readable, have alphaIsTransparency enabled and have no mip chain.
+
 Initialize mono
 Mono path[0] = 'D:/Program Files/Unity/Editor/Data/Managed'
 Mono path[1] = 'D:/Program Files/Unity/Editor/Data/MonoBleedingEdge/lib/mono/unityjit'
 Mono config path = 'D:/Program Files/Unity/Editor/Data/MonoBleedingEdge/etc'
-Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56396
-Begin MonoManager ReloadAssembly
-Registering precompiled unity dll's ...
-Register platform support module: D:/Program Files/Unity/Editor/Data/PlaybackEngines/WindowsStandaloneSupport/UnityEditor.WindowsStandalone.Extensions.dll
-Registered in 0.001129 seconds.
-Native extension for WindowsStandalone target not found
-Refreshing native plugins compatible for Editor in 33.35 ms, found 0 plugins.
-Preloading 0 native plugins for Editor in 0.00 ms.
-Invoked RoslynAnalysisRunner static constructor.
-RoslynAnalysisRunner will not be running.
-RoslynAnalysisRunner has terminated.
-Mono: successfully reloaded assembly
-- Completed reload, in  0.845 seconds
-Platform modules already initialized, skipping
-Registering precompiled user dll's ...
-Registered in 0.001548 seconds.
-Begin MonoManager ReloadAssembly
-Native extension for WindowsStandalone target not found
-Refreshing native plugins compatible for Editor in 0.46 ms, found 0 plugins.
-Preloading 0 native plugins for Editor in 0.00 ms.
-Invoked RoslynAnalysisRunner static constructor.
-RoslynAnalysisRunner will not be running.
-RoslynAnalysisRunner has terminated.
-Mono: successfully reloaded assembly
-- Completed reload, in  0.915 seconds
-Platform modules already initialized, skipping
-========================================================================
-Worker process is ready to serve import requests
-Launched and connected shader compiler UnityShaderCompiler.exe after 0.05 seconds
-Refreshing native plugins compatible for Editor in 0.43 ms, found 0 plugins.
-Preloading 0 native plugins for Editor in 0.00 ms.
-Unloading 1415 Unused Serialized files (Serialized files now loaded: 0)
-System memory in use before: 65.0 MB.
-System memory in use after: 65.1 MB.
-
-Unloading 33 unused Assets to reduce memory usage. Loaded Objects now: 1846.
-Total: 2.284800 ms (FindLiveObjects: 0.270700 ms CreateObjectMapping: 0.112900 ms MarkObjects: 1.815400 ms  DeleteObjects: 0.084600 ms)
-
-========================================================================
-Received Import Request.
-  path: Assets/Texture/logo.jpg
-  artifactKey: Guid(1054a938ef1535a4e9b0c2c63d43ba83) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Texture/logo.jpg using Guid(1054a938ef1535a4e9b0c2c63d43ba83) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'b8a6ea851f4f937d771f21dc81883318') in 0.109090 seconds
-  Import took 0.112621 seconds .
-
-========================================================================
-Received Import Request.
-  Time since last request: 0.028611 seconds.
-  path: Assets/Texture/logo.jpg
-  artifactKey: Guid(1054a938ef1535a4e9b0c2c63d43ba83) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Texture/logo.jpg using Guid(1054a938ef1535a4e9b0c2c63d43ba83) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: 'b8a6ea851f4f937d771f21dc81883318') in 0.013986 seconds
-  Import took 0.018618 seconds .
-
-========================================================================
-Received Import Request.
-  Time since last request: 348.735118 seconds.
-  path: Assets/Texture/splash.jpg
-  artifactKey: Guid(bc5ae960066d4354f80f29cf04e514fd) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Texture/splash.jpg using Guid(bc5ae960066d4354f80f29cf04e514fd) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '42f9e313b953ca7e1bb099022aa463aa') in 0.089816 seconds
-  Import took 0.094215 seconds .
-
-========================================================================
-Received Import Request.
-  Time since last request: 3.087808 seconds.
-  path: Assets/Texture/logo.jpg
-  artifactKey: Guid(1054a938ef1535a4e9b0c2c63d43ba83) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Texture/logo.jpg using Guid(1054a938ef1535a4e9b0c2c63d43ba83) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '6ea515a627cddeabf5996602ed4f4ddb') in 0.158870 seconds
-  Import took 0.162485 seconds .
-
-========================================================================
-Received Import Request.
-  Time since last request: 8.400398 seconds.
-  path: Assets/Texture/splash.jpg
-  artifactKey: Guid(bc5ae960066d4354f80f29cf04e514fd) Importer(815301076,1909f56bfc062723c751e8b465ee728b)
-Start importing Assets/Texture/splash.jpg using Guid(bc5ae960066d4354f80f29cf04e514fd) Importer(815301076,1909f56bfc062723c751e8b465ee728b)  -> (artifact id: '2d88e4753053ca96001115bb4df0b50a') in 0.099823 seconds
-  Import took 0.103239 seconds .
-
-========================================================================
-Received Prepare
-Refreshing native plugins compatible for Editor in 6.63 ms, found 0 plugins.
-Preloading 0 native plugins for Editor in 0.00 ms.
-Unloading 22 Unused Serialized files (Serialized files now loaded: 0)
-System memory in use before: 40.6 MB.
-System memory in use after: 40.7 MB.
-
-Unloading 22 unused Assets to reduce memory usage. Loaded Objects now: 1855.
-Total: 7.675000 ms (FindLiveObjects: 0.253300 ms CreateObjectMapping: 0.130400 ms MarkObjects: 7.255500 ms  DeleteObjects: 0.033300 ms)
-
-========================================================================
-Received Prepare
-Refreshing native plugins compatible for Editor in 4.85 ms, found 0 plugins.
-Preloading 0 native plugins for Editor in 0.00 ms.
-Unloading 22 Unused Serialized files (Serialized files now loaded: 0)
-System memory in use before: 40.6 MB.
-System memory in use after: 40.7 MB.
-
-Unloading 22 unused Assets to reduce memory usage. Loaded Objects now: 1855.
-Total: 3.537400 ms (FindLiveObjects: 0.214600 ms CreateObjectMapping: 0.064000 ms MarkObjects: 3.223900 ms  DeleteObjects: 0.032800 ms)
-
+Using monoOptions --debugger-agent=transport=dt_socket,embedding=1,server=y,suspend=n,address=127.0.0.1:56248
