@@ -67,7 +67,7 @@ public class Calc : MonoBehaviour
     }
 
     void ShowCamera(){
-         SceneManager.LoadScene("camera");
+         SceneManager.LoadScene("test");
     }
 
     void handleCheckDoCalcResult(string str)

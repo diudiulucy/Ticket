@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using System.IO;
+using UnityEngine.SceneManagement;
 public class CameraTest : MonoBehaviour
 {
 
@@ -15,54 +16,7 @@ public class CameraTest : MonoBehaviour
     WebCamTexture _webCameraTexture; //接收返回的图片数据 
     public GameObject Plane;//作为显示摄像头的面板
     public Button btnTakePhoto;
-
-    void OnGUI()
-    {
-        if (GUI.Button(new Rect(100, 100, 100, 100), "初始化相机"))
-        {
-            StartCoroutine("InitCameraCor");//开始协程，意思就是启动一个辅助的线程
-        }
-
-        //添加一个按钮来控制摄像机的开和关
-        if (GUI.Button(new Rect(100, 250, 100, 100), "ON/OFF"))
-        {
-            if (_webCameraTexture != null && Plane != null)
-            {
-
-                if (_webCameraTexture.isPlaying)
-                {
-                    Debug.Log("=================停止");
-                    StopCamera();
-                }
-
-                else
-                {
-                    Debug.Log("=================播放");
-                    PlayCamera();
-                }
-
-            }
-        }
-        if (GUI.Button(new Rect(100, 450, 100, 100), "Quit"))
-        {
-
-            Application.Quit();//退出
-        }
-
-    }
-
-    public void PlayCamera()
-    {
-        Plane.GetComponent<MeshRenderer>().enabled = true;
-        _webCameraTexture.Play();
-    }
-
-
-    public void StopCamera()
-    {
-        Plane.GetComponent<MeshRenderer>().enabled = false;
-        _webCameraTexture.Stop();
-    }
+    public Button btnClose;
 
     /// <summary> 
     /// 初始化摄像头
@@ -95,9 +49,6 @@ public class CameraTest : MonoBehaviour
                 DeviceName = devices[0].name;
                 Debug.Log("==================================有设备" + DeviceName);
                 _webCameraTexture = new WebCamTexture(DeviceName, (int)Screen.width, (int)Screen.height, (int)60);
-                Plane.GetComponent<Renderer>().material.mainTexture = _webCameraTexture;
-                Plane.transform.localScale = new Vector3(1, 1, 1);
-
                 if (rawImage != null)
                 {
                     rawImage.texture = _webCameraTexture;
@@ -111,14 +62,21 @@ public class CameraTest : MonoBehaviour
     void Start()
     {
         addEvent();
+        StartCoroutine("InitCameraCor");//开始协程，意思就是启动一个辅助的线程
     }
 
     void addEvent()
     {
-        btnTakePhoto.onClick.AddListener(() =>
+        btnTakePhoto?.onClick.AddListener(() =>
         {
             Debug.Log("点击拍照");
             savePhoto(_webCameraTexture);
+        });
+
+        btnClose?.onClick.AddListener(() =>
+        {
+            Debug.Log("关闭");
+            SceneManager.LoadScene("calc");
         });
     }
 
@@ -128,10 +86,22 @@ public class CameraTest : MonoBehaviour
         t2d.SetPixels(webCamTexture.GetPixels());
         t2d.Apply();
         byte[] imageTytes = t2d.EncodeToJPG();
-        File.WriteAllBytes(Application.streamingAssetsPath + "/mys/" + Time.time + ".jpg", imageTytes);
-        File.WriteAllBytes(Application.persistentDataPath + "/myp/" + Time.time + ".jpg", imageTytes);
-        Debug.Log(Application.streamingAssetsPath);
-        Debug.Log(Application.persistentDataPath);
+        string platformPath = Application.streamingAssetsPath + "/MyTempPhotos";
+
+#if UNITY_ANDROID && !UNITY_EDITOR
+
+        platformPath = "/sdcard/DCIM/MyTempPhotos";
+
+#endif
+
+        // 如果文件夹不存在，就创建文件夹
+
+        if (!Directory.Exists(platformPath))
+        {
+            Directory.CreateDirectory(platformPath);
+        }
+        File.WriteAllBytes(platformPath + Time.time + ".jpg", imageTytes);
+
         Destroy(t2d);
         t2d = null;
     }
