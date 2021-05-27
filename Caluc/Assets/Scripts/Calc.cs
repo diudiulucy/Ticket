@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using System;
 using UnityEngine.SceneManagement;
+using UnityEngine.EventSystems;
 public class Calc : MonoBehaviour
 {
     //----------------------------------输入----------------------------------
@@ -36,8 +37,14 @@ public class Calc : MonoBehaviour
     public const float unit = 10000;
     public const float per = 100;
 
-
     public GameObject homeBar;
+
+    public GameObject datePickerPrefab;
+    GameObject datePickerGb;
+
+    DateTime exchangeDateT;
+    DateTime deadlineDateT;
+
     void addEvent()
     {
         btnCalc.onClick.AddListener(btnCalcClick);
@@ -51,7 +58,6 @@ public class Calc : MonoBehaviour
         exchangeDate.onEndEdit.AddListener(exchangeDateEndEdit);
         deadlineDate.onEndEdit.AddListener(deadlineDateEndEdit);
 
-
         var homeBarComp = homeBar?.GetComponent<HomeBar>();
         homeBarComp?.AddListeners(new List<Action>{
             Quit,
@@ -59,15 +65,68 @@ public class Calc : MonoBehaviour
             null,
             null,
         });
+
+        EventTriggerListener.Get(exchangeDate.gameObject).onSelect = exchangeDataInput;
+        EventTriggerListener.Get(deadlineDate.gameObject).onSelect = deadlineDateInput;
+    }
+
+    void deadlineDateInput(GameObject go)
+    {
+        showDatePicker(go, deadlineDate);
+
+        datePickerGb.GetComponent<DatePickerGroup>().okClick = (DateTime dateTime) =>
+        {
+            deadlineDateT = dateTime;
+            changeDate(deadlineDate, dateTime);
+            hideDatePicker();
+            calcDays();
+        };
     }
 
 
-    void Quit(){
+    void exchangeDataInput(GameObject go)
+    {
+        showDatePicker(go, exchangeDate);
+        datePickerGb.GetComponent<DatePickerGroup>().okClick = (DateTime dateTime) =>
+        {
+            exchangeDateT = dateTime;
+            changeDate(exchangeDate, dateTime);
+            hideDatePicker();
+            calcDays();
+        };
+    }
+
+    void showDatePicker(GameObject target, InputField input)
+    {
+        if (datePickerGb == null)
+        {
+            datePickerGb = Instantiate(datePickerPrefab);
+        }
+        datePickerGb.transform.SetParent(getRoot().transform);
+        datePickerGb.transform.localPosition = UnityEngine.Vector3.zero;
+        datePickerGb.SetActive(true);
+        datePickerGb.GetComponent<DatePickerGroup>().cancelClick = hideDatePicker;
+    }
+
+    GameObject getRoot()
+    {
+        return this.gameObject;
+    }
+
+    void hideDatePicker()
+    {
+        datePickerGb.SetActive(false);
+    }
+
+
+    void Quit()
+    {
         Application.Quit();
     }
 
-    void ShowCamera(){
-         SceneManager.LoadScene("test");
+    void ShowCamera()
+    {
+        SceneManager.LoadScene("test");
     }
 
     void handleCheckDoCalcResult(string str)
@@ -75,11 +134,13 @@ public class Calc : MonoBehaviour
         doCalcResult();
     }
 
-    void exchangeDateEndEdit(string str){
+    void exchangeDateEndEdit(string str)
+    {
         doCalcResult();
     }
 
-    void deadlineDateEndEdit(string str){
+    void deadlineDateEndEdit(string str)
+    {
         doCalcResult();
     }
 
@@ -97,7 +158,7 @@ public class Calc : MonoBehaviour
 
     void monthRateChange(string str)
     {
-        Debug.Log("正在输入：" + str);
+        Log.i("正在输入：" + str);
         if (str == "")
         {
             return;
@@ -112,30 +173,30 @@ public class Calc : MonoBehaviour
 
     void monthRateEnd(string str)
     {
-        Debug.Log("输入结果为" + str);
+        Log.i("输入结果为" + str);
     }
-
 
     void btnCalcClick()
     {
-        Debug.Log("btnCalcClick");
-        if (!checkNeedCalc())
+        Log.i("btnCalcClick");
+
+        if (calcDays() && checkNeedCalc())
         {
-            return;
+            doCalcResult();
         }
-        doCalcResult(); 
+
     }
 
     void doCalcResult()
     {
-        if (checkNeedCalc()&&calcDays())
+        if (checkNeedCalc() && calcDays())
         {
             float monthRateF = float.Parse(monthRate.text);
             float yearRateF = float.Parse(yearRate.text);
             float amountF = float.Parse(amount.text);
 
             int offsetDayf = offsetDay.text == "" ? 0 : int.Parse(offsetDay.text);
-            int spanDays = Util.getDiffDay(exchangeDate.text, deadlineDate.text, offsetDayf);
+            int spanDays = Util.getDiffDay(exchangeDateT, deadlineDateT, offsetDayf);
             float bankChargesF = bankCharges.text == "" ? 0 : float.Parse(bankCharges.text);
             float interestF = (spanDays * amountF * unit * yearRateF) / (per * monthDay * yearMonth);
             interestF += bankChargesF * amountF / 10;
@@ -174,13 +235,14 @@ public class Calc : MonoBehaviour
         //TODO 合法性判断
         if (exchangeDate.text != "" && deadlineDate.text != "")
         {
-            try{
-                DateTime dt1 = System.Convert.ToDateTime(exchangeDate.text);
-                DateTime dt2 = System.Convert.ToDateTime(deadlineDate.text);
+            try
+            {
                 int offsetDayf = offsetDay.text == "" ? 0 : int.Parse(offsetDay.text);
-                totalDay.text = Util.getDiffDay(exchangeDate.text, deadlineDate.text, offsetDayf) + "";
+                totalDay.text = Util.getDiffDay(exchangeDateT, deadlineDateT, offsetDayf) + "";
                 return true;
-            }catch{
+            }
+            catch
+            {
                 return false;
             }
         }
@@ -203,28 +265,18 @@ public class Calc : MonoBehaviour
         // string nowStr = now.ToString("yyyy-MM-dd");//string.Format("{0:d}",now);
 
         // exchangeDate.text = nowStr + Util.GetWeeks(now);
-        changeDate(exchangeDate, now.ToString("yyyy-MM-dd"));
+        changeDate(exchangeDate, now);
+        exchangeDateT = now;
         DateTime halfYear = now.AddMonths(yearMonth);
+        changeDate(deadlineDate, halfYear);
+        deadlineDateT = halfYear;
 
-        // deadlineDate.text = halfYear.ToString("yyyy-MM-dd") + Util.GetWeeks(halfYear);
-        changeDate(deadlineDate, halfYear.ToString("yyyy-MM-dd"));
-        // Debug.Log("time_now" + DateTime.Now.DayOfWeek);
-
-        // Debug.Log("time_now" + System.DateTime.Now);        //当前时间（年月日时分秒）  
-        //         Debug.Log("time_utcnow" + System.DateTime.UtcNow);     // 当前时间（年月日时分秒）  
-        //         Debug.Log("time_year" + System.DateTime.Now.Year);  //当前时间（年）  
-        //         Debug.Log("time_month" + System.DateTime.Now.Month); //当前时间（月）  
-        //         Debug.Log("time_day" + System.DateTime.Now.Day);    // 当前时间(日)  
-        //         Debug.Log("time_h" + System.DateTime.Now.Hour);  // 当前时间(时)  
-        //         Debug.Log("time_min" + System.DateTime.Now.Minute);  // 当前时间(分)  
-        //         Debug.Log("time_second" + System.DateTime.Now.Second); // 当前时间(秒)  
         calcDays();
     }
 
-    void changeDate(InputField input, string day)
+    void changeDate(InputField input, DateTime day)
     {
-        DateTime dt1 = System.Convert.ToDateTime(day);
-        input.text = dt1.ToString("yyyy-MM-dd");// + Util.GetWeeks(dt1);
+        input.text = day.ToString("yyyy-MM-dd") + "    " + Util.GetWeeks(day);
     }
 
     bool checkNeedCalc()
@@ -235,11 +287,4 @@ public class Calc : MonoBehaviour
         }
         return false;
     }
-
-
-    // Update is called once per frame
-    // void Update()
-    // {
-
-    // }
 }

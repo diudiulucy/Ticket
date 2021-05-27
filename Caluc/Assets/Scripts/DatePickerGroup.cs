@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.UI;
 /// <summary>
 /// 日期选择组
 /// </summary>
@@ -25,6 +25,12 @@ public class DatePickerGroup : MonoBehaviour
     public event OnDateUpdate _OnDateUpdate;
 
     public static DateTime _selectTime;
+
+   	public delegate void  okClickListener(DateTime date);
+    public Action cancelClick;
+    public okClickListener okClick;
+    public Button btnOk;
+    public Button btnCancel;
     void Awake()
     {
     	//设置最大最小日期
@@ -33,10 +39,24 @@ public class DatePickerGroup : MonoBehaviour
         Init();
     }
 
-    private void Update()
-    {
-
+    void Start(){
+        addEvent();
     }
+
+    void addEvent(){
+        btnOk.onClick.AddListener(()=>{
+            // okClick?.Invoke();
+            if(okClick!=null){
+                okClick(_selectDate);
+            }
+        });
+
+        btnCancel.onClick.AddListener(()=>{
+            cancelClick?.Invoke();
+        });
+    }
+
+   
     public void Init(DateTime dt)
     {
         _selectDate = dt;
@@ -63,7 +83,7 @@ public class DatePickerGroup : MonoBehaviour
     /// </summary>
     public void onDateUpdate()
     {
-        Debug.Log("当前选择日期：" + _selectDate.ToString("yyyy-MM-dd"));
+        // Debug.Log("当前选择日期：" + _selectDate.ToString("yyyy-MM-dd"));
         //将选中的时间给_selectTime ，供其他界面调用
         _selectTime = _selectDate;
         for (int i = 0; i < _datePickerList.Count; i++)

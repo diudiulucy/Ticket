@@ -4,10 +4,10 @@ using UnityEngine;
 using System;
 public class Util
 {
-    public static int getDiffDay(string day1, string day2, int offsetDay = 0)
+    public static int getDiffDay(DateTime dt1, DateTime dt2, int offsetDay = 0)
     {
-        DateTime dt1 = System.Convert.ToDateTime(day1);
-        DateTime dt2 = System.Convert.ToDateTime(day2);
+        // DateTime dt1 = System.Convert.ToDateTime(day1);
+        // DateTime dt2 = System.Convert.ToDateTime(day2);
         dt2 = dt2.AddDays(offsetDay);
         TimeSpan span = dt2.Subtract(dt1);
         int dayDiff = span.Days;

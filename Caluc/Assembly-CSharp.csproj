@@ -45,9 +45,12 @@
      <Compile Include="Assets\Scripts\DatePickerGroup.cs" />
      <Compile Include="Assets\Unity-Logs-Viewer\Reporter\ReporterMessageReceiver.cs" />
      <Compile Include="Assets\Scripts\Util.cs" />
+     <Compile Include="Assets\Scripts\GlobalConfig.cs" />
      <Compile Include="Assets\Scripts\Calc.cs" />
+     <Compile Include="Assets\Scripts\Log.cs" />
      <Compile Include="Assets\Unity-Logs-Viewer\Reporter\Test\TestReporter.cs" />
      <Compile Include="Assets\Scripts\CameraTest.cs" />
+     <Compile Include="Assets\Scripts\EventTriggerListener.cs" />
      <None Include="Assets\StreamingAssets\build_info.txt" />
     <Reference Include="UnityEngine">
         <HintPath>D:/Program Files/Unity/Editor/Data/Managed/UnityEngine/UnityEngine.dll</HintPath>

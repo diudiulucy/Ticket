@@ -26,7 +26,7 @@ public class CameraTest : MonoBehaviour
         yield return Application.RequestUserAuthorization(UserAuthorization.WebCam);
         if (Application.HasUserAuthorization(UserAuthorization.WebCam))
         {
-            Debug.Log("==================================初始化成功");
+            Log.i("==================================初始化成功");
 
             // 监控第一次授权，是否获得到设备（因为很可能第一次授权了，但是获得不到设备，这里这样避免）
             // 多次 都没有获得设备，可能就是真没有摄像头，结束获取 camera
@@ -47,8 +47,8 @@ public class CameraTest : MonoBehaviour
 
 
                 DeviceName = devices[0].name;
-                Debug.Log("==================================有设备" + DeviceName);
-                _webCameraTexture = new WebCamTexture(DeviceName, (int)Screen.width, (int)Screen.height, (int)60);
+                _webCameraTexture = new WebCamTexture(DeviceName, (int)rawImage.rectTransform.sizeDelta.x, (int)rawImage.rectTransform.sizeDelta.y, (int)60);
+                Log.i("==================================有设备" + DeviceName + _webCameraTexture.videoVerticallyMirrored + "y" + _webCameraTexture.videoRotationAngle);
                 if (rawImage != null)
                 {
                     rawImage.texture = _webCameraTexture;
@@ -69,13 +69,13 @@ public class CameraTest : MonoBehaviour
     {
         btnTakePhoto?.onClick.AddListener(() =>
         {
-            Debug.Log("点击拍照");
+            Log.i("点击拍照");
             savePhoto(_webCameraTexture);
         });
 
         btnClose?.onClick.AddListener(() =>
         {
-            Debug.Log("关闭");
+            Log.i("关闭");
             SceneManager.LoadScene("calc");
         });
     }
@@ -85,22 +85,20 @@ public class CameraTest : MonoBehaviour
         Texture2D t2d = new Texture2D(webCamTexture.width, webCamTexture.height, TextureFormat.ARGB32, true);
         t2d.SetPixels(webCamTexture.GetPixels());
         t2d.Apply();
-        byte[] imageTytes = t2d.EncodeToJPG();
-        string platformPath = Application.streamingAssetsPath + "/MyTempPhotos";
-
-#if UNITY_ANDROID && !UNITY_EDITOR
-
-        platformPath = "/sdcard/DCIM/MyTempPhotos";
-
-#endif
-
-        // 如果文件夹不存在，就创建文件夹
-
+        byte[] imageTytes = t2d.EncodeToJPG(100);
+        Log.i(Application.streamingAssetsPath);
+        Log.i(Application.persistentDataPath);
+        string platformPath = Application.persistentDataPath + "/MyPhoto";
+#if UNITY_ANDROID 
+        platformPath = "/sdcard/DCIM/";
+#endif 
         if (!Directory.Exists(platformPath))
         {
             Directory.CreateDirectory(platformPath);
         }
-        File.WriteAllBytes(platformPath + Time.time + ".jpg", imageTytes);
+
+        File.WriteAllBytes(platformPath + "/" + Time.time + ".jpg", imageTytes);
+        // File.WriteAllBytes(Application.streamingAssetsPath +"/"+ Time.time + ".jpg", imageTytes);
 
         Destroy(t2d);
         t2d = null;

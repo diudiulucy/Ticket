@@ -82,8 +82,8 @@ public class DatePicker : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDr
         _item.transform.localEulerAngles = Vector3.zero;
         if (real_i != 0)
         {
-            _item.GetComponent<Text>().color = new Color(50/255, 50/255, 50/255, 1 - 0.2f - (Mathf.Abs(real_i) / (_itemNum / 2 + 1)));
-            _item.GetComponent<Text>().fontSize = 45;
+            _item.GetComponent<Text>().color = new Color(255/255, 255/255, 255/255, 1 - 0.2f - (Mathf.Abs(real_i) / (_itemNum / 2 + 1)));
+            _item.GetComponent<Text>().fontSize = 40;
         }
         return _item;
     }
